@@ -25,3 +25,14 @@ type ProcInfoTranslation struct {
 		Name        string `json:"name"`
 	} `json:"-"`
 }
+
+// ParamInfo describes the input and output specification of a MiEL program. However, this is just a hint from sane programs.
+type ParamInfo struct {
+	Example struct {
+		// An arbitrary response example.
+		Request map[string]interface{} `json:"request"`
+
+		// An arbitrary response example.
+		Response map[string]interface{} `json:"response"`
+	} `json:"example"`
+}
