@@ -8,6 +8,10 @@ import (
 	"github.com/gotrino/fusion/spec/table"
 )
 
+var ProcInfoRepo = rest.Repository[ProcInfo]{
+	Path: "/api/v1/procs",
+}
+
 type Overview struct {
 	Route string `route:"/procs"` // gets injected, due to app.Route, matches the route-tag
 	Limit int    `query:"limit"`  // parsed from the routing system, due to query-tag
@@ -25,11 +29,9 @@ func (a *Overview) Compose(ctx context.Context) app.Activity {
 		Visible: true,
 		Fragments: []app.Fragment{
 			table.DataTable[ProcInfo]{
-				Repository: rest.Repository[ProcInfo]{
-					Path: "/api/v1/procs/meta",
-				},
-				Deletable: true,
-				Columns:   []table.Column{{Name: "Name"}, {Name: "Beschreibung"}},
+				Repository: ProcInfoRepo,
+				Deletable:  true,
+				Columns:    []table.Column{{Name: "Name"}, {Name: "Beschreibung"}},
 				OnRender: func(ctx context.Context, t ProcInfo, col int) table.Cell {
 					switch col {
 					case 0:

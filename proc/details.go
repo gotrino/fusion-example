@@ -20,8 +20,9 @@ func (a *Details) Compose(ctx context.Context) app.Activity {
 			form.Form{
 				Title:       "Stammdaten",
 				Description: "Bearbeiten Sie hier die Stammdaten des Scripts",
-				Resource: rest.Resource[ProcInfo]{
-					Path: "/api/v1/procs/meta/" + a.ID,
+				ResourceID:  a.ID,
+				Repository: rest.Repository[ProcInfo]{
+					Path: "/api/v1/procs",
 				},
 				CanCancel: true,
 				CanWrite:  true,
@@ -55,25 +56,30 @@ func (a *Details) Compose(ctx context.Context) app.Activity {
 							return src.Description
 						},
 					},
+				},
+			},
 
-					form.Integer[ProcInfo]{
-						Text:     "Degree",
-						Disabled: true,
-						FromModel: func(src ProcInfo) int64 {
-							return 100
-						},
-					},
-					form.Select[ProcInfo]{
-						Text:        "Select something",
-						Hint:        "a cool selector",
-						MultiSelect: true,
-						ToModel: func(src []form.Item, dst *ProcInfo) error {
-							return nil
-						},
-						FromModel: func(src ProcInfo) []form.Item {
-							return nil
-						},
-					},
+			form.Form{
+				Title:       "Beispiel",
+				Description: "Beispiel für Ein- und Ausgabe-Formate für das Script",
+				ResourceID:  a.ID,
+				Repository: rest.Repository[ProcInfo]{
+					Path: "/api/v1/procs",
+				},
+				Fields: []form.Field{
+					form.CodeEditor{},
+				},
+			},
+
+			form.Form{
+				Title:       "Script",
+				Description: "Der definierte Rechenkernel",
+				ResourceID:  a.ID,
+				Repository: rest.Repository[ProcInfo]{
+					Path: "/api/v1/procs",
+				},
+				Fields: []form.Field{
+					form.CodeEditor{},
 				},
 			},
 		},
